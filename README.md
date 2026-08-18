@@ -23,9 +23,72 @@ Instead of spending hours jumping between files and asking:
 
 CodePilot gives you the answers through **static analysis, interactive visualizations, and Gemini-powered AI assistance**.
 
-### Input
+---
+
+## 📥 Input
+
+CodePilot accepts repositories through:
+
+- 📦 ZIP Repository Upload
+- 🐙 Public GitHub Repository
+- 📋 Pasted Project Structure
+
+---
+
+## 📤 Output
+
+After analyzing a repository, CodePilot provides:
+
+- 🗺️ Architecture Map
+- 🕸️ Dependency Graph
+- 🔌 APIs Explorer
+- 🗄️ Database Analysis
+- 📁 Intelligent File Explorer
+- 📊 Codebase Metrics
+- 🤖 AI Engineering Insights
+- 💬 Ask CodePilot
+
+---
+
+## ✨ Features
+
+### 🧠 Real Codebase Analysis
+
+CodePilot analyzes actual source code using AST-based static analysis.
+
+It detects:
+
+- Functions
+- Classes
+- Methods
+- Interfaces
+- Types
+- Imports
+- Exports
+- Internal dependencies
+- External packages
+- API routes
+- Database schemas
+- Model relationships
+- Architecture patterns
+
+---
+
+### 🗺️ Interactive Architecture Map
+
+CodePilot transforms a repository into a developer-friendly architecture map.
+
+Instead of abstract layers, it shows practical software categories:
 
 ```text
-📦 ZIP Repository
-🐙 GitHub Repository
-📋 Project Structure
+Frontend UI
+     ↓
+Routes / API
+     ↓
+Controllers
+     ↓
+Services
+     ↓
+Models / Data Access
+     ↓
+Database
