@@ -29,3 +29,14 @@ CodePilot gives you the answers through **static analysis, interactive visualiza
 📦 ZIP Repository
 🐙 GitHub Repository
 📋 Project Structure
+
+### Output
+
+Architecture
+Dependencies
+APIs
+Database
+Files
+Metrics
+AI Insights
+Ask CodePilot
