@@ -55,12 +55,16 @@ export async function uploadGitHub(req, res, next) {
   try {
     const { url } = req.body;
     if (!url) {
+      console.warn('[uploadGitHub] Missing GitHub repository URL in request body');
       return res.status(400).json({ success: false, error: 'GitHub repository URL is required' });
     }
 
+    console.log(`[uploadGitHub] Starting GitHub repository ingestion: ${url}`);
     const projectData = await GitHubService.ingestRepository(url);
+    console.log(`[uploadGitHub] Successfully ingested GitHub repository: ${url} (id: ${projectData.id}, files: ${projectData.fileCount})`);
     return res.status(200).json({ success: true, project: projectData });
   } catch (err) {
+    console.error(`[uploadGitHub] Ingestion failed for '${req.body?.url}':`, err.message || err);
     return res.status(400).json({ success: false, error: err.message || 'GitHub ingestion failed' });
   }
 }
@@ -69,12 +73,16 @@ export function uploadPaste(req, res) {
   try {
     const { structure, name } = req.body;
     if (!structure) {
+      console.warn('[uploadPaste] Missing project structure in request body');
       return res.status(400).json({ success: false, error: 'Project structure text is required' });
     }
 
+    console.log(`[uploadPaste] Ingesting pasted structure for: ${name || 'Pasted-Project'}`);
     const projectData = PasteService.ingestPastedStructure(structure, name || 'Pasted-Project');
+    console.log(`[uploadPaste] Successfully ingested pasted structure (id: ${projectData.id}, files: ${projectData.fileCount})`);
     return res.status(200).json({ success: true, project: projectData });
   } catch (err) {
+    console.error('[uploadPaste] Ingestion failed:', err.message || err);
     return res.status(400).json({ success: false, error: err.message || 'Paste ingestion failed' });
   }
 }
@@ -229,6 +237,7 @@ export async function getInsights(req, res) {
     const insights = await AIService.generateInsights(project);
     res.status(200).json({ success: true, insights });
   } catch (err) {
+    console.error(`[getInsights] Error for project ${targetId}:`, err.message || err);
     res.status(500).json({ success: false, error: err.message });
   }
 }
@@ -238,13 +247,21 @@ export async function askCodePilot(req, res) {
   const targetId = projectId === 'current' ? getCurrentProjectId() : projectId;
   const { question } = req.body;
 
-  if (!targetId) return res.status(404).json({ success: false, error: 'Project not found' });
-  if (!question) return res.status(400).json({ success: false, error: 'Question text is required' });
+  if (!targetId) {
+    console.warn('[askCodePilot] Project not found');
+    return res.status(404).json({ success: false, error: 'Project not found' });
+  }
+  if (!question) {
+    console.warn('[askCodePilot] Missing question text');
+    return res.status(400).json({ success: false, error: 'Question text is required' });
+  }
 
   try {
+    console.log(`[askCodePilot] Querying AI for project ${targetId}: "${question}"`);
     const answer = await AskService.ask(targetId, question);
     res.status(200).json({ success: true, answer });
   } catch (err) {
+    console.error(`[askCodePilot] Error for project ${targetId}:`, err.message || err);
     res.status(500).json({ success: false, error: err.message });
   }
 }
